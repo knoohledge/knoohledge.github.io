@@ -11,19 +11,12 @@ body {
 }
 
 .my-cluster-icon {
-    position: relative;
     background-color: var(--main-color);
     color: var(--white-color);
     border: solid .3rem var(--secondary-color);
     border-radius: 50%;
-}
-
-.my-cluster-icon div {
-    position: absolute !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    text-align: center !important;
+    text-align: center;
+    line-height: 40px;
     font-family: 'Raleway', sans-serif;
 }
 
