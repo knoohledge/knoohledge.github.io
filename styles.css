@@ -16,8 +16,9 @@ body {
     border: solid .3rem var(--secondary-color);
     border-radius: 50%;
     text-align: center;
-    line-height: 40px;
-    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .marker-cluster div {
