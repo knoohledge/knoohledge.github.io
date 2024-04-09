@@ -17,6 +17,7 @@ body {
     border-radius: 50%;
     text-align: center;
     line-height: 40px;
+    vertical-align: middle;
 }
 
 .marker-cluster div {
