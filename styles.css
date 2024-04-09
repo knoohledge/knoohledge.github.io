@@ -17,7 +17,14 @@ body {
     border-radius: 50%;
     text-align: center;
     line-height: 40px;
-    font-family: 'Raleway', sans-serif;
+}
+
+.my-cluster-icon div {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    text-align: center !important;
 }
 
 .custom-tooltip {
