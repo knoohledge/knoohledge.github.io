@@ -24,6 +24,7 @@ body {
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
     text-align: center !important;
+    font-family: 'Raleway', sans-serif;
 }
 
 .custom-tooltip {
