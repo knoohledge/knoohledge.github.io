@@ -19,6 +19,10 @@ body {
     line-height: 40px;
 }
 
+.marker-cluster div {
+    line-height: normal !important;
+}
+
 .custom-tooltip {
     background-color: #BC9817;
     color: white;
