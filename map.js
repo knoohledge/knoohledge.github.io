@@ -1,41 +1,39 @@
-// Utilisez une couche de tuiles personnalisée de Mapbox
+// Utilisez une couche de tuiles personnalisée de Mapbox avec un style grayscale
 const tileLayer = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}@2x?access_token={accessToken}', {
     maxZoom: 18,
-    id: 'williambernard/clupou3n600ve01r2c7uv74in',
+    id: 'mapbox/light-v10', // Utilisez le style light-v10 pour un effet grayscale
     tileSize: 512,
     zoomOffset: -1,
     accessToken: 'pk.eyJ1Ijoid2lsbGlhbWJlcm5hcmQiLCJhIjoiY2x1b3J1M3lzMWZhcjJ2bG5qY3BzdnA0NSJ9.8BpsWtRMCdZKtFwNGI-XpQ'
 });
 
+// Définir les limites de la France
+const franceBounds = [
+    [41.3337, -5.5591], // Sud-Ouest
+    [51.124, 9.6625]    // Nord-Est
+];
+
 // Créez la carte et ajoutez la couche de tuiles personnalisée
 const mymap = L.map('mapid', {
     zoomControl: false,
-    attributionControl: false
+    attributionControl: false,
+    maxBounds: franceBounds, // Définir les limites de la carte
+    maxBoundsViscosity: 1.0,  // Rendre les limites strictes
+    minZoom: 5                // Fixer le maximum du dézoom à 5
 }).setView([46.5, 2.5], 6);
 tileLayer.addTo(mymap);
 
-// Créez une icône personnalisée
-const customIcon = L.icon({
-    iconUrl: 'https://raw.githubusercontent.com/knoohledge/DOOH-screens/main/TIPI%20Map%20Icon.png',
-    iconSize: [38, 38],
-    iconAnchor: [19, 38],
-    popupAnchor: [0, -38]
-});
-
-// Créez un groupe de clusters de marqueurs avec une fonction de création d'icônes personnalisée
-const markers = L.markerClusterGroup({
-    iconCreateFunction: function(cluster) {
-        return L.divIcon({
-            html: '<b>' + cluster.getChildCount() + '</b>',
-            className: 'my-cluster-icon',
-            iconSize: L.point(40, 40)
-        });
-    },
-    showCoverageOnHover: false, // Désactivez l'affichage du polygone au survol
+// Créez une icône personnalisée en forme de rond avec la couleur HEX 333 et le nombre d'écrans
+const customIcon = (ecrans) => L.divIcon({
+    className: 'my-cluster-icon', // Utiliser la même classe que les clusters
+    html: `<b>${ecrans}</b>`, // Afficher le nombre d'écrans
+    iconSize: L.point(24, 24), // 1.5rem = 24px
+    iconAnchor: [12, 12],
+    popupAnchor: [0, -12]
 });
 
 // Récupérez le div pour la liste des POI
-const poiListDiv = document.getElementById('poi-list');
+const poiListDiv = document.getElementById('poi-names'); // Modifier pour utiliser le nouveau div scrollable
 
 fetch('https://raw.githubusercontent.com/knoohledge/DOOH-screens/main/TIPI%20Locations%20-%20Feuille%201.csv')
     .then(response => response.text())
@@ -43,9 +41,17 @@ fetch('https://raw.githubusercontent.com/knoohledge/DOOH-screens/main/TIPI%20Loc
         const results = Papa.parse(data, {header: true, dynamicTyping: true}).data;
         results.forEach(location => {
             if (location.latitude && location.longitude) {
-                // Créez un marqueur et ajoutez-le au groupe de clusters
-                const marker = L.marker([location.latitude, location.longitude], {icon: customIcon});
-                marker.bindTooltip(location.name, {className: 'custom-tooltip', direction: 'top', permanent: false, offset: [0, -38]});
+                // Créez un marqueur et ajoutez-le directement à la carte
+                const marker = L.marker([location.latitude, location.longitude], {
+                    icon: customIcon(location.ecrans)
+                });
+                marker.bindTooltip(location.name, {
+                    className: 'custom-tooltip',
+                    direction: 'top',
+                    permanent: false,
+                    offset: [0, -16], // 1rem = 16px
+                    noWrap: true // Empêcher l'affichage de la flèche
+                });
 
                 // Ajoutez des gestionnaires d'événements pour l'animation du tooltip
                 marker.on('mouseover', function() {
@@ -58,7 +64,7 @@ fetch('https://raw.githubusercontent.com/knoohledge/DOOH-screens/main/TIPI%20Loc
                     tooltip.setOpacity(0);
                 });
 
-                markers.addLayer(marker);
+                marker.addTo(mymap);
 
                 // Créez un lien pour ce POI dans la liste
                 const poiLink = document.createElement('a');
@@ -75,24 +81,21 @@ fetch('https://raw.githubusercontent.com/knoohledge/DOOH-screens/main/TIPI%20Loc
                 console.warn('Invalid coordinates:', location);
             }
         });
-
-        // Ajoutez le groupe de clusters à la carte
-        mymap.addLayer(markers);
     });
 
-    document.getElementById('search-bar').addEventListener('input', function(e) {
-        var searchValue = e.target.value.toLowerCase();
-        var poiListItems = document.querySelectorAll('#poi-list a'); // Sélectionnez les éléments a à l'intérieur de #poi-list
+document.getElementById('search-bar').addEventListener('input', function(e) {
+    var searchValue = e.target.value.toLowerCase();
+    var poiListItems = document.querySelectorAll('#poi-list a'); // Sélectionnez les éléments a à l'intérieur de #poi-list
+    
+    poiListItems.forEach(function(listItem) {
+        var poiText = listItem.textContent.toLowerCase();
         
-        poiListItems.forEach(function(listItem) {
-            var poiText = listItem.textContent.toLowerCase();
-            
-            if (searchValue === '') {
-                listItem.classList.remove('matching-search'); // Supprime la classe
-            } else if (poiText.includes(searchValue)) {
-                listItem.classList.add('matching-search'); // Ajoute la classe
-            } else {
-                listItem.classList.remove('matching-search'); // Supprime la classe
-            }
-        });
+        if (searchValue === '') {
+            listItem.classList.remove('matching-search'); // Supprime la classe
+        } else if (poiText.includes(searchValue)) {
+            listItem.classList.add('matching-search'); // Ajoute la classe
+        } else {
+            listItem.classList.remove('matching-search'); // Supprime la classe
+        }
     });
+});
