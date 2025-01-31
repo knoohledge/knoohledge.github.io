@@ -88,6 +88,8 @@ body {
     line-height: .8rem;
     font-family: 'Inter', sans-serif;
     font-size: .9rem;
+    margin-left: 6rem; /* Ajouter 6rem à la marge gauche */
+    margin-top: 6rem;  /* Ajouter 6rem à la marge supérieure */
 }
 
 #poi-list::-webkit-scrollbar {
@@ -162,4 +164,9 @@ body {
 #poi-list a.matching-search {
     color: #BC9817;
     transition: color 300ms;
+}
+
+#mapid {
+    height: 100vh;
+    width: 100vw;
 }
