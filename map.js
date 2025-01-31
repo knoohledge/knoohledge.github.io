@@ -24,17 +24,27 @@ const mymap = L.map('mapid', {
 }).setView([46.5, 2.5], 6);
 tileLayer.addTo(mymap);
 
-// Créez une icône personnalisée en forme de rond avec la couleur HEX 333 et le nombre d'écrans
-const customIcon = (ecrans) => L.divIcon({
-    className: 'my-cluster-icon', // Utiliser la même classe que les clusters
-    html: `<b>${ecrans}</b>`, // Afficher le nombre d'écrans
-    iconSize: L.point(24, 24), // 1.5rem = 24px
-    iconAnchor: [12, 12],
-    popupAnchor: [0, -12]
+// Créez une icône personnalisée avec l'image spécifiée et une bordure
+const customIcon = () => L.divIcon({
+    className: 'custom-marker-icon',
+    html: `<img src="https://raw.githubusercontent.com/knoohledge/DOOH-screens/refs/heads/main/pngtree-sport-ball-golf-ball-png-png-image_9962814%201.png" style="border: 3px solid #333; border-radius: 50%; width: 1.5rem; height: 1.5rem;" />`,
+    iconSize: [30, 30], // Taille de l'icône incluant la bordure
+    iconAnchor: [15, 15], // Point d'ancrage de l'icône
+    popupAnchor: [0, -15] // Point d'ancrage du popup
 });
 
-// Récupérez le div pour la liste des POI
-const poiListDiv = document.getElementById('poi-names'); // Modifier pour utiliser le nouveau div scrollable
+// Créez le groupe de clusters de marqueurs avec un style personnalisé
+const markers = L.markerClusterGroup({
+    iconCreateFunction: function(cluster) {
+        return L.divIcon({
+            html: `<div style="background-color: #333; color: white; border-radius: 50%; width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center;">${cluster.getChildCount()}</div>`,
+            className: 'my-cluster-icon',
+            iconSize: L.point(32, 32) // Taille de l'icône de cluster
+        });
+    },
+    spiderfyOnMaxZoom: false, // Désactiver le polygonage lors du survol
+    showCoverageOnHover: false // Désactiver l'affichage de la couverture lors du survol
+});
 
 fetch('https://raw.githubusercontent.com/knoohledge/DOOH-screens/main/TIPI%20Locations%20-%20Feuille%201.csv')
     .then(response => response.text())
@@ -42,11 +52,16 @@ fetch('https://raw.githubusercontent.com/knoohledge/DOOH-screens/main/TIPI%20Loc
         const results = Papa.parse(data, {header: true, dynamicTyping: true}).data;
         results.forEach(location => {
             if (location.latitude && location.longitude) {
-                // Créez un marqueur et ajoutez-le directement à la carte
+                // Créez un marqueur
                 const marker = L.marker([location.latitude, location.longitude], {
-                    icon: customIcon(location.ecrans)
+                    icon: customIcon()
                 });
-                marker.bindTooltip(location.name, {
+                const ecransText = location.ecrans === 1 ? 'écran' : 'écrans';
+                marker.bindTooltip(`
+                    <div>
+                        <strong style="font-weight: bold;">${location.name}</strong><br>
+                        <span style="font-size: 0.8rem; font-weight: 300;">${location.ecrans} ${ecransText}</span>
+                    </div>`, {
                     className: 'custom-tooltip',
                     direction: 'top',
                     permanent: false,
@@ -65,38 +80,13 @@ fetch('https://raw.githubusercontent.com/knoohledge/DOOH-screens/main/TIPI%20Loc
                     tooltip.setOpacity(0);
                 });
 
-                marker.addTo(mymap);
-
-                // Créez un lien pour ce POI dans la liste
-                const poiLink = document.createElement('a');
-                poiLink.href = '#';
-                poiLink.textContent = location.name;
-                poiLink.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    // Faites zoomer la carte sur le POI lorsque le lien est cliqué
-                    mymap.setView([location.latitude, location.longitude], 13);
-                });
-                poiListDiv.appendChild(poiLink);
-                poiListDiv.appendChild(document.createElement('br')); // Ajoutez une nouvelle ligne après chaque lien
+                // Ajoutez le marqueur au groupe de clusters
+                markers.addLayer(marker);
             } else {
                 console.warn('Invalid coordinates:', location);
             }
         });
-    });
 
-document.getElementById('search-bar').addEventListener('input', function(e) {
-    var searchValue = e.target.value.toLowerCase();
-    var poiListItems = document.querySelectorAll('#poi-list a'); // Sélectionnez les éléments a à l'intérieur de #poi-list
-    
-    poiListItems.forEach(function(listItem) {
-        var poiText = listItem.textContent.toLowerCase();
-        
-        if (searchValue === '') {
-            listItem.classList.remove('matching-search'); // Supprime la classe
-        } else if (poiText.includes(searchValue)) {
-            listItem.classList.add('matching-search'); // Ajoute la classe
-        } else {
-            listItem.classList.remove('matching-search'); // Supprime la classe
-        }
+        // Ajoutez le groupe de clusters à la carte
+        mymap.addLayer(markers);
     });
-});
