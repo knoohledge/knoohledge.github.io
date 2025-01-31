@@ -19,7 +19,8 @@ const mymap = L.map('mapid', {
     attributionControl: false,
     maxBounds: franceBounds, // Définir les limites de la carte
     maxBoundsViscosity: 1.0,  // Rendre les limites strictes
-    minZoom: 5                // Fixer le maximum du dézoom à 5
+    minZoom: 5,               // Fixer le maximum du dézoom à 5
+    gestureHandling: true     // Activer la gestion des gestes
 }).setView([46.5, 2.5], 6);
 tileLayer.addTo(mymap);
 
