@@ -29,15 +29,15 @@ body {
 }
 
 .custom-tooltip {
-    background: radial-gradient(circle at top left, #333333, #000000); /* Modifier le gradient pour qu'il soit radial */
+    background: radial-gradient(circle at top left, #204B33 0%, #12291C 60%); /* Modifier le gradient radial */
     color: white;
     font-family: 'Inter', sans-serif;
     font-size: 1.2em;
-    padding: .5rem;
+    padding: 0.5rem 1rem; /* Ajouter un padding de 1rem sur les côtés et de 0,5rem en haut et en bas */
     text-align: center;
     opacity: 0;
     transition: opacity 0.2s ease-out;
-    border-radius: 0; /* Supprimer le radius */
+    border-radius: 5px; /* Ajouter un radius de 5px */
     border: none; /* Supprimer la bordure */
 }
 
@@ -69,101 +69,7 @@ body {
 }
 
 #poi-list {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    position: absolute;
-    z-index: 1000;
-    top: 1rem;
-    left: 1rem;
-    width: auto;
-    height: 60vh; /* Modifier la hauteur pour 60vh */
-    overflow-y: scroll; /* Permettre le défilement vertical */
-    scrollbar-width: none; /* Pour Firefox */
-    -ms-overflow-style: none; /* Pour Internet Explorer et Edge */
-    background: radial-gradient(circle at top left, #204B33 40%, #12291C 60%); /* Inverser à nouveau les couleurs HEX du gradient radial */
-    padding: 1.7rem 2rem 1.7rem 1.6rem; /* Soustraire 0,3rem en haut et en bas du padding */
-    border-radius: .5rem;
-    box-shadow: var(--shadow);
-    line-height: .8rem;
-    font-family: 'Inter', sans-serif;
-    font-size: .9rem;
-    margin-left: 6rem; /* Ajouter 6rem à la marge gauche */
-    margin-top: 6rem;  /* Ajouter 6rem à la marge supérieure */
-}
-
-#poi-list::-webkit-scrollbar {
-    display: none; /* Pour Chrome, Safari et Opera */
-}
-
-#poi-names {
-    overflow-y: auto; /* Permettre le défilement vertical */
-    max-height: calc(60vh - 4rem);
-    scrollbar-width: none; /* Pour Firefox */
-    -ms-overflow-style: none; /* Pour Internet Explorer et Edge */
-    display: flex;
-    flex-direction: column;
-    gap: 0; /* Enlever le gap entre les noms des POI */
-}
-
-#poi-names::-webkit-scrollbar {
-    display: none; /* Pour Chrome, Safari et Opera */
-}
-
-#search-bar {
-    width: 100%;
-    padding: 0.5rem;
-    margin-bottom: 1.5rem;
-    font-size: 1rem;
-    border-radius: 0.3rem; /* Modifier le radius à 0.3rem */
-    border: none;
-    box-shadow: 0 0 1rem rgba(0,0,0,0.2);
-    transition: box-shadow 0.3s ease; /* Ajoute une transition pour un effet de focus plus doux */
-    font-family: 'Inter', sans-serif;
-    font-size: .9rem;
-    background-color: #586D60; /* Modifier la couleur pour HEX 586D60 */
-    color: #ffffff; /* Modifier la couleur du texte tapé pour qu'il soit blanc */
-}
-
-#search-bar::placeholder {
-    color: #a6afa9; /* Modifier la couleur du placeholder pour HEX a6afa9 */
-}
-
-#search-bar:focus {
-    outline: none; /* Supprime l'outline par défaut */
-    box-shadow: none; /* Supprimer l'effet de focus */
-}
-
-#search-bar::-ms-clear {
-    display: none; /* Pour Internet Explorer et Edge */
-}
-
-#search-bar::-webkit-search-cancel-button {
-    display: none; /* Pour Chrome, Safari et Opera */
-}
-
-#poi-list a {
-    margin: 0;
-    padding: 0;
-    height: auto;
-    width: auto;
-    box-sizing: border-box;
-    color: var(--white-color);
-    text-decoration: none;
-    transition: color 300ms; /* Assurer que la transition du hover dure 300ms */
-    font-size: 0.8rem; /* Modifier la taille de la police à 0.8 rem */
-    line-height: 1rem; /* Définir la hauteur de ligne à 1rem */
-    padding-left: 0.4rem; /* Modifier le padding gauche à 0,4rem */
-}
-
-#poi-list a:hover,
-#poi-list a:focus {
-    color: #BC9817; /* change la couleur du texte lors du survol ou du focus */
-}
-
-#poi-list a.matching-search {
-    color: #BC9817;
-    transition: color 300ms;
+    display: none; /* Supprimer la liste des POI */
 }
 
 #mapid {
