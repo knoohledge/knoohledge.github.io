@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Tipi Cartographie</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+        <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+<body>
+    <div id="mapid" style="height: 100vh;"></div>
+    <div id="poi-list">
+        <div class="header">
+            <h1 class="poi-title" style="font-size: 1.7rem;">Nos Clubs</h1>
+        </div>
+        <input type="search" id="search-bar" placeholder="Rechercher un club">
+        <div id="poi-names" style="overflow-y: auto; max-height: calc(60vh - 4rem);"> <!-- Ajouter un div scrollable pour les noms des POI -->
+            <!-- Les noms des POI seront ajoutés ici -->
+        </div>
+    </div>
+
+    <script src="map.js"></script>
+</body>
+</html>
