@@ -9,8 +9,8 @@ const tileLayer = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{
 
 // Définir les limites de la France
 const franceBounds = [
-    [41.3337, -5.5591], // Sud-Ouest
-    [51.124, 9.6625]    // Nord-Est
+    [35.0, -10.0], // Sud-Ouest élargi
+    [55.0, 15.0]   // Nord-Est élargi
 ];
 
 // Créez la carte et ajoutez la couche de tuiles personnalisée
@@ -21,7 +21,7 @@ const mymap = L.map('mapid', {
     maxBoundsViscosity: 1.0,  // Rendre les limites strictes
     minZoom: 5,               // Fixer le maximum du dézoom à 5
     gestureHandling: true     // Activer la gestion des gestes
-}).setView([46.5, 2.5], 6);
+}).setView([46.8, 2.5], 6);
 tileLayer.addTo(mymap);
 
 // Créez une icône personnalisée avec l'image spécifiée et une bordure
