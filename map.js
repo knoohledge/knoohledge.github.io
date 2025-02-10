@@ -21,7 +21,7 @@ const mymap = L.map('mapid', {
     maxBoundsViscosity: 1.0,  // Rendre les limites strictes
     minZoom: 5,               // Fixer le maximum du dézoom à 5
     gestureHandling: true     // Activer la gestion des gestes
-}).setView([46.8, 2.5], 6);
+}).setView([46.8, 2.5], 5);
 tileLayer.addTo(mymap);
 
 // Créez une icône personnalisée avec l'image spécifiée et une bordure
