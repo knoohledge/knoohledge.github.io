@@ -27,24 +27,14 @@ tileLayer.addTo(mymap);
 // Créez une icône personnalisée avec l'image spécifiée et une bordure
 const customIcon = () => L.divIcon({
     className: 'custom-marker-icon',
-    html: `<img src="https://raw.githubusercontent.com/knoohledge/DOOH-screens/refs/heads/main/pngtree-sport-ball-golf-ball-png-png-image_9962814%201.png" style="border: 3px solid #333; border-radius: 50%; width: 1.5rem; height: 1.5rem;" />`,
-    iconSize: [30, 30], // Taille de l'icône incluant la bordure
-    iconAnchor: [15, 15], // Point d'ancrage de l'icône
-    popupAnchor: [0, -15] // Point d'ancrage du popup
+    html: `<img src="https://raw.githubusercontent.com/knoohledge/DOOH-screens/refs/heads/main/pngtree-sport-ball-golf-ball-png-png-image_9962814%201.png" style="border: 2px solid #333; border-radius: 50%; width: 0.75rem; height: 0.75rem;" />`,
+    iconSize: [15, 15], // Taille de l'icône divisée par 2
+    iconAnchor: [7.5, 7.5], // Point d'ancrage ajusté
+    popupAnchor: [0, -7.5] // Point d'ancrage du popup ajusté
 });
 
-// Créez le groupe de clusters de marqueurs avec un style personnalisé
-const markers = L.markerClusterGroup({
-    iconCreateFunction: function(cluster) {
-        return L.divIcon({
-            html: `<div style="background-color: #333; color: white; border-radius: 50%; width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center;">${cluster.getChildCount()}</div>`,
-            className: 'my-cluster-icon',
-            iconSize: L.point(32, 32) // Taille de l'icône de cluster
-        });
-    },
-    spiderfyOnMaxZoom: false, // Désactiver le polygonage lors du survol
-    showCoverageOnHover: false // Désactiver l'affichage de la couverture lors du survol
-});
+// Remplacez le groupe de clusters par un LayerGroup simple
+const markers = L.layerGroup();
 
 fetch('https://raw.githubusercontent.com/knoohledge/DOOH-screens/main/TIPI%20Locations%20-%20Feuille%201.csv')
     .then(response => response.text())
@@ -80,13 +70,13 @@ fetch('https://raw.githubusercontent.com/knoohledge/DOOH-screens/main/TIPI%20Loc
                     tooltip.setOpacity(0);
                 });
 
-                // Ajoutez le marqueur au groupe de clusters
+                // Ajoutez le marqueur au LayerGroup
                 markers.addLayer(marker);
             } else {
                 console.warn('Invalid coordinates:', location);
             }
         });
 
-        // Ajoutez le groupe de clusters à la carte
+        // Ajoutez le LayerGroup à la carte
         mymap.addLayer(markers);
     });
